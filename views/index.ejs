@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Firebase Auth Demo</title>
+</head>
+<body>
+    <h1>Welcome to Firebase Auth Demo</h1>
+    <button onclick="loginWithGoogle()">Login with Google</button>
+
+    <script src="https://www.gstatic.com/firebasejs/8.0.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.0.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.0.0/firebase-firestore.js"></script>
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyBnmvEj4xq6603na6J9EkZFimiWDh-eiq8",
+            authDomain: "auth2-ff2ef.firebaseapp.com",
+            projectId: "auth2-ff2ef",
+            storageBucket: "auth2-ff2ef.appspot.com",
+            messagingSenderId: "391865425495",
+            appId: "1:391865425495:web:68a5b972e3e7b75d6e8d12",
+            measurementId: "G-84VW88SKMQ"
+        };
+
+        // Använd firebase för att initiera appen med din konfiguration
+        const app = firebase.initializeApp(firebaseConfig);
+
+        function loginWithGoogle() {
+            var provider = new firebase.auth.GoogleAuthProvider();
+            firebase.auth().signInWithPopup(provider).then(function(result) {
+                var user = result.user;
+                var uid = user.uid;
+
+                // Spara användare i Firestore
+                firebase.firestore().collection('users').doc(uid).set({
+                    name: user.displayName,
+                    email: user.email,
+                    // ... andra fält du vill spara
+                });
+
+                // Omdirigera till välkomstsida
+            window.location.href = "/welcome.html";
+            }).catch(function(error) {
+                console.error(error);
+            });
+        }
+    </script>
+</body>
+</html>
