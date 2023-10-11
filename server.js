@@ -4,7 +4,7 @@ const express = require('express');
 const app = express();  // <-- Definiera app här
 const admin = require('firebase-admin');
 
-const serviceAccount = require('.');
+const serviceAccount = require('./myproject/config/firebaseServiceAccountKey.json');
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
